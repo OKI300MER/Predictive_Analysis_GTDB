@@ -32,11 +32,13 @@ Relevant columns for analysis include:
 Analysis Steps
 1. Data Cleaning:
  - Selected relevant columns and filtered data for the specified period (2000 - 2023).
+
 2. Data Visualization:
  - Visualized top countries by number of attacks.
  - Analyzed the number of each type of attack and visualized top countries by number of attacks and top types of attack.
  - Investigated attacks over time and visualized the trend.
  - Explored the number of fatalities by country.
+
 3. Hypothesis Testing:
  
  - Hypothesis: Certain factors significantly influence the success of a terrorist attack.
@@ -53,15 +55,43 @@ Analysis Steps
   - Null Hypothesis (H0): The selected features do not influence the number of fatalities or injuries in a terrorist attack.
   - Alternative Hypothesis (Ha): The selected features have a significant impact on the number of fatalities or injuries in a terrorist attack.
  - Analysis Model: Random forests regression to determine the most important features affecting the severity of the attack.
+
 4. Machine Learning Models:
  - Binary Classification of Attack Success: Predicted whether a terrorist attack is successful or not using logistic regression.
  - Multiclass Classification of Attack Type: Predicted the type of attack based on various features using logistic regression.
  - Regression on Fatalities or Injuries: Predicted the number of fatalities or injuries caused by a terrorist attack using a random forest regressor.
 
 Key Findings
-The chi-square test results suggest a significant relationship between the type of attack and the region, indicating regional variations in terrorist tactics.
-ANOVA results reveal differences in the severity of attacks across regions, with certain regions experiencing higher fatality rates.
-The logistic regression model achieved an accuracy of approximately 89.78% in predicting the success of terrorist attacks, with better performance in predicting positive outcomes.
-Conclusion
-The analysis provides insights into the distribution, severity, and predictive factors of global terrorism tactics. Regional factors play a significant role in shaping the nature and prevalence of terrorist incidents, highlighting the importance of understanding localized trends for effective counterterrorism strategies.
+Based on the provided code and analysis, here are some key findings:
+
+Top Countries by Number of Attacks:
+ - Iraq, Pakistan, and Afghanistan are the top three countries with the highest number of terrorist attacks.
+
+Top Types of Attacks:
+ - Bombing/Explosion and Armed Assault are the most prevalent types of terrorist attacks globally.
+
+Target Types and Regions:
+ - Different regions have varying patterns of target types in terrorist attacks.
+   For example, in the Middle East & North Africa region, Private Citizens & Property are the most common targets.
+
+Number of Attacks Over Time:
+ - There was a peak in the number of terrorist attacks around 2014, with a gradual decrease afterward.
+
+Number of Fatalities by Country:
+ - Iraq has experienced the highest number of fatalities due to terrorist attacks.
+
+Geospatial Analysis:
+ - The distribution of terrorist attacks varies across different regions and countries.
+   Certain areas have a higher concentration of attacks, indicating potential hotspots.
+
+Binary Classification of Attack Success:
+ -The logistic regression model achieved a certain level of accuracy in predicting the success of terrorist attacks based on various features.
+
+Multiclass Classification of Attack Type:
+ - The multiclass logistic regression model was able to classify terrorist attack types to some extent based on the provided features.
+
+Regression on Fatalities or Injuries:
+ - The random forests regression model was moderately successful in predicting the number of fatalities or injuries in terrorist attacks.
+
+These findings provide insights into the patterns and trends of terrorist activities, the factors influencing attack success, the distribution of attack types, and the severity of attacks in terms of fatalities and injuries. Further analysis and refinement of machine learning models could enhance the understanding of these phenomena and improve predictive accuracy.
 
