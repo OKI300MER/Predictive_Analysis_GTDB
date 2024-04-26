@@ -4,7 +4,7 @@ DAI COHORT 8 - Chris Thompson
 
 Capstone Project: Exploring Global Terrorism Tactics
 Overview
-This project is intended to explore trends and patterns in global terrorism tactics using data from the Global Terrorism Database. The analysis focuses on understanding the distribution of terrorist attacks, the severity of incidents, and the factors influencing terrorist activities across different regions.
+This project aims to explore trends and patterns in global terrorism tactics using data from the Global Terrorism Database. The analysis focuses on understanding the distribution of terrorist attacks, the severity of incidents, and the factors influencing terrorist activities across different regions.
 
 Dataset
 The dataset used for this analysis is the Global Terrorism Database (GTD), which provides comprehensive information on terrorist incidents worldwide. The dataset includes various attributes such as the location, date, type of attack, target type, weapons used, and casualty counts.
@@ -33,3 +33,4 @@ ANOVA results reveal differences in the severity of attacks across regions, with
 The logistic regression model achieved an accuracy of approximately 89.78% in predicting the success of terrorist attacks, with better performance in predicting positive outcomes.
 Conclusion
 The analysis provides insights into the distribution, severity, and predictive factors of global terrorism tactics. Regional factors play a significant role in shaping the nature and prevalence of terrorist incidents, highlighting the importance of understanding localized trends for effective counterterrorism strategies.
+
