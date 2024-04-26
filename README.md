@@ -1,5 +1,9 @@
 # effective_terrorism_exploration
 
+<p align="center">
+  <img src="IMG/Screenshot 2024-04-26 150044.png" width = 900 height = 60>
+</p>
+
 DAI COHORT 8 - Chris Thompson
 
 Capstone Project: Exploring Global Terrorism Tactics
