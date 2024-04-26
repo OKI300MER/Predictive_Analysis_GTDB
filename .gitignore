@@ -1,0 +1,7 @@
+# Original Dataset too large for github
+/data/globalterrorismdb_0522dist.csv
+
+/data/**
+
+# ignore IPYNB
+/IPYNB
