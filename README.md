@@ -56,7 +56,7 @@ Analysis Steps
  - Investigated attacks over time and visualized the trend.
 
 <p align="center">
-  <img src="IMG/Number of Attacks Over Time.png" width = 800 height = 500>
+  <img src="IMG/Total Number of Attacks vs Deaths.png" width = 800 height = 500>
 </p>
 
  - ROC Curve for predictions
