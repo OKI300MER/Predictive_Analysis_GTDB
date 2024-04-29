@@ -44,25 +44,25 @@ Analysis Steps
  - Visualized top countries by number of attacks.
 
  <p align="center">
-  <img src="IMG/Top 10 Countries by Attack.png" width = 500 height = 600>
+  <img src="IMG/Top 10 Countries by Attack.png" width = 500 height = 800>
 </p>
 
  - Analyzed the number of each type of attack and visualized top countries by number of attacks and top types of attack.
 
 <p align="center">
-  <img src="IMG/Top 10 Countries by Attack Type.png" width = 500 height = 600>
+  <img src="IMG/Top 10 Countries by Attack Type.png" width = 500 height = 900>
 </p>
 
  - Investigated attacks over time and visualized the trend.
 
 <p align="center">
-  <img src="IMG/Number of Attacks Over Time.png" width = 500 height = 600>
+  <img src="IMG/Number of Attacks Over Time.png" width = 500 height = 800>
 </p>
 
  - ROC Curve for predictions
 
  <p align="center">
-  <img src="IMG/ROC Curve.png" width = 500 height = 600>
+  <img src="IMG/ROC Curve.png" width = 500 height = 800>
 </p>
 
 3. Hypothesis Testing:
