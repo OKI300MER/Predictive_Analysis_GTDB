@@ -263,11 +263,11 @@ attack_type_columns = [col for col in attack_country_dummies.columns if 'attackt
 features_and_target = attack_country_dummies[attack_type_columns]
 attack_country_dummies
 
-# Define other features excluding attack type columns
-other_features = [col for col in country_dummies.columns if col not in attack_type_columns]
-
 # Identify the attack type columns
 attack_type_columns = [col for col in country_dummies.columns if 'attacktype1_txt_' in col]
+
+# Define other features excluding attack type columns
+other_features = [col for col in country_dummies.columns if col not in attack_type_columns]
 
 # Extract the attack type columns along with other necessary features
 features_and_target = country_dummies[attack_type_columns + other_features]

@@ -42,9 +42,28 @@ Analysis Steps
 
 2. Data Visualization:
  - Visualized top countries by number of attacks.
+
+ <p align="center">
+  <img src="IMG/Top 10 Countries by Attack.png" width = 12 height = 8>
+</p>
+
  - Analyzed the number of each type of attack and visualized top countries by number of attacks and top types of attack.
+
+<p align="center">
+  <img src="IMG/Top 10 Countries by Attack Type.png" width = 12 height = 8>
+</p>
+
  - Investigated attacks over time and visualized the trend.
- - Explored the number of fatalities by country.
+
+<p align="center">
+  <img src="IMG/Number of Attacks Over Time.png" width = 12 height = 8>
+</p>
+
+ - ROC Curve for predictions
+
+ <p align="center">
+  <img src="IMG/ROC Curve.png" width = 12 height = 8>
+</p>
 
 3. Hypothesis Testing:
  
