@@ -10,6 +10,8 @@ Capstone Project: Exploring Global Terrorism Database and Making Predictions
 
 This repository contains code for predictive analysis of terrorist activities using machine learning techniques. The analysis includes data cleaning, visualization, hypothesis testing, and building machine learning models for various classification and regression tasks related to terrorist incidents.
 
+This code performs an extensive analysis of global terrorism data from 2000 to 2023. It involves data cleaning, visualization, statistical analysis, machine learning modeling, and geospatial mapping. The dataset includes information such as the year of the incident, country, region, attack type, target type, weapon type, number of fatalities, and number of injuries.
+
 Dataset
 The dataset used for this analysis is the Global Terrorism Database (GTD), which provides comprehensive information on terrorist incidents worldwide. The dataset includes various attributes such as the location, date, type of attack, target type, weapons used, and casualty counts.
 
@@ -28,6 +30,11 @@ Relevant columns for analysis include:
  - nkill: Number of fatalities
  - nwound: Number of injuries
  - gname: Perpetrator group name
+
+
+The visualizations provide insights into various aspects of terrorism, including the top countries and regions affected, the distribution of attack types and target types, trends over time, and fatalities by country. Statistical tests like chi-square and ANOVA are used to analyze relationships between categorical variables. Machine learning models, such as logistic regression and random forests, are employed to predict the success of terrorist attacks based on various factors.
+
+The graphs are important as they provide a visual representation of the data, making it easier to identify patterns, trends, and relationships. For example, the bar charts show the distribution of attacks across countries and the prevalence of different attack types, while the heatmap provides a spatial view of attack locations over time.
 
 Analysis Steps
 1. Data Cleaning:
@@ -60,6 +67,10 @@ Analysis Steps
  - Binary Classification of Attack Success: Predicted whether a terrorist attack is successful or not using logistic regression.
  - Multiclass Classification of Attack Type: Predicted the type of attack based on various features using logistic regression.
  - Regression on Fatalities or Injuries: Predicted the number of fatalities or injuries caused by a terrorist attack using a random forest regressor.
+
+Stats and probability are used to analyze relationships between variables, assess model performance, and make predictions. For instance, chi-square tests are used to assess the independence of attack types and regions, while logistic regression models predict the success of attacks based on various features.
+
+The compute_attack_metrics function calculates essential metrics for each incident based on specified parameters. It computes attack severity and potential impact, where severity is determined by the number of fatalities and injuries relative to a severity factor, and potential impact incorporates a weighted factor based on the target type of the incident. This weighting allows for a more nuanced assessment of the potential impact of different types of attacks.
 
 Key Findings
 Based on the provided code and analysis, here are some key findings:
@@ -94,4 +105,3 @@ Regression on Fatalities or Injuries:
  - The random forests regression model was moderately successful in predicting the number of fatalities or injuries in terrorist attacks.
 
 These findings provide insights into the patterns and trends of terrorist activities, the factors influencing attack success, the distribution of attack types, and the severity of attacks in terms of fatalities and injuries. Further analysis and refinement of machine learning models could enhance the understanding of these phenomena and improve predictive accuracy.
-

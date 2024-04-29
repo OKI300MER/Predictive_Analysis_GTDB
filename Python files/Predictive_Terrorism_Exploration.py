@@ -1,16 +1,25 @@
-# Import libaries
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+import folium
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_curve, roc_auc_score
+from sklearn.utils import resample
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LinearRegression
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 from imblearn.over_sampling import SMOTE
+from sklearn.utils.class_weight import compute_class_weight
+from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import RandomForestRegressor
 import statsmodels.api as sm
+from statsmodels.formula.api import ols
 import scipy.stats as stats
-import folium
-from folium.plugins import HeatMapWithTime
+from scipy.stats import chi2_contingency
+from scipy.stats import f_oneway
 
 # Load the dataset
 terrorism_df = pd.read_csv(r"C:\Users\shric\Desktop\Dai\articles\CAPSTONE\Predictive_Analysis_GTDB\data\globalterrorismdb_0522dist.csv")
@@ -83,7 +92,7 @@ plt.xlabel('Year')
 plt.ylabel('Number of Attacks')
 plt.title('Number of Attacks Over Time')
 plt.annotate('Peak 2014', xy=(2014, 16000), xytext=(2010, 15900), arrowprops=dict(facecolor='black', edgecolor='black', arrowstyle='->', linewidth=3))
-plt.ylim(bottom=0)  
+plt.ylim(bottom=0)
 plt.tight_layout()
 plt.show()
 
@@ -105,6 +114,22 @@ plt.show()
 # Prepare data for Geospatial Analysis
 geo_spatial_data = filtered_df[['latitude', 'longitude', 'nkill', 'attacktype1_txt']]
 
+# Filter out attacks with missing latitude or longitude values
+geo_spatial_data = geo_spatial_data.dropna(subset=['latitude', 'longitude'])
+
+# Create a map centered around the mean latitude and longitude
+attack_map = folium.Map(location=[geo_spatial_data['latitude'].mean(), geo_spatial_data['longitude'].mean()], zoom_start=2)
+
+# Add a marker for each attack
+for index, row in geo_spatial_data.iterrows():
+    folium.Marker(location=[row['latitude'], row['longitude']],
+                  popup=row['attacktype1_txt'] + ' - ' + str(row['nkill']) + ' fatalities',
+                  icon=folium.Icon(color='red')).add_to(attack_map)
+
+# Display the map
+attack_map
+
+# Filter the DataFrame to include only the top ten countries
 top_countries_df = cleaned_terrorism_df[cleaned_terrorism_df['country_txt'].isin(top_countries.index)]
 
 # One-hot encode the categorical columns
@@ -123,6 +148,7 @@ country_dummies.head(1)
 
 # # Create a new DataFrame with selected columns
 # log_model_columns = country_dummies[selected_columns]
+
 # log_model_columns
 country_dummies.dropna()
 country_dummies.info()
@@ -200,6 +226,7 @@ roc_auc = roc_auc_score(y_test, y_pred)
 print("Accuracy:", accuracy)
 print("Classification Report:\n", classification_report1)
 print("ROC AUC Score:", roc_auc)
+
 # Confusion Matrix
 conf_matrix = confusion_matrix(y_test, y_pred)
 
@@ -210,6 +237,7 @@ plt.title("Confusion Matrix")
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.show()
+
 # ROC Curve
 fpr, tpr, thresholds = roc_curve(y_test, logistic_model.predict_proba(X_test)[:,1])
 roc_auc = roc_auc_score(y_test, logistic_model.predict_proba(X_test)[:,1])  # Corrected here
@@ -229,10 +257,20 @@ plt.show()
 attack_country_dummies = pd.get_dummies(top_countries_df[['country_txt', 'region_txt', 'attacktype1_txt', 'weaptype1_txt', 'targtype1_txt', 'gname']])
 
 # Identify the attack type columns
+attack_type_columns = [col for col in attack_country_dummies.columns if 'attacktype1_txt_' in col]
+
+# Extract the attack type columns along with other necessary features
+features_and_target = attack_country_dummies[attack_type_columns]
+attack_country_dummies
+
+# Define other features excluding attack type columns
+other_features = [col for col in country_dummies.columns if col not in attack_type_columns]
+
+# Identify the attack type columns
 attack_type_columns = [col for col in country_dummies.columns if 'attacktype1_txt_' in col]
 
 # Extract the attack type columns along with other necessary features
-features_and_target = country_dummies[attack_type_columns]
+features_and_target = country_dummies[attack_type_columns + other_features]
 
 # Drop rows with missing values from both X_multiclass and y_multiclass
 X_multiclass = X_multiclass.dropna()
@@ -282,8 +320,8 @@ cleaned_df.dropna(inplace=True)
 encoded_df = pd.get_dummies(cleaned_df, columns=['country_txt', 'region_txt', 'attacktype1_txt', 'targtype1_txt', 'weaptype1_txt'])
 
 # Separate features (X) and target variable (y)
-X = encoded_df.drop(columns=['nkill', 'nwound']) 
-y = encoded_df[['nkill', 'nwound']]  
+X = encoded_df.drop(columns=['nkill', 'nwound'])  # Features
+y = encoded_df[['nkill', 'nwound']]  # Target variable (number of fatalities and injuries)
 
 # Split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -310,7 +348,6 @@ plt.title('Actual vs. Predicted Number of Fatalities')
 plt.legend()
 plt.grid(True)
 plt.show()
-
 plt.figure(figsize=(10, 6))
 plt.scatter(y_test['nwound'], y_pred[:, 1], color='green', label='Predicted')
 plt.plot([0, max(y_test['nwound'])], [0, max(y_test['nwound'])], color='red', linestyle='--', label='Ideal Prediction')
@@ -338,3 +375,167 @@ HeatMapWithTime(heat_data, radius=15).add_to(base_map)
 
 # Display the map
 base_map.save("terrorist_attacks_heatmap_with_time.html")
+
+# Define numerical values for each target type category
+target_type_values = {
+    'Business': 1,
+    'Police': 2,
+    'Private Citizens & Property': 3,
+    'Utilities': 4,
+    'Military': 5,
+    'Violent Political Party': 6,
+    'Government (General)': 7,
+    'Transportation': 8,
+    'Tourists': 9,
+    'Government (Diplomatic)': 10,
+    'Religious Figures/Institutions': 11,
+    'Abortion Related': 12,
+    'Journalists & Media': 13,
+    'NGO': 14,
+    'Telecommunication': 15,
+    'Terrorists/Non-State Militia': 16,
+    'Educational Institution': 17,
+    'Airports & Aircraft': 18,
+    'Unknown': 19,
+    'Maritime': 20,
+    'Food or Water Supply': 21,
+    'Other': 22
+}
+
+# Map numerical values to the target type column
+cleaned_terrorism_df['target_type_numeric'] = cleaned_terrorism_df['targtype1_txt'].map(target_type_values)
+
+# Assign numerical weight to each target
+target_type_weights = {
+    'Business': 0.5,
+    'Police': 0.7,
+    'Private Citizens & Property': 0.3,
+    'Utilities': 0.8,
+    'Military': 0.8,
+    'Violent Political Party': 0.1,
+    'Government (General)': 0.8,
+    'Transportation': 0.3,
+    'Tourists': 0.1,
+    'Government (Diplomatic)': 0.8,
+    'Religious Figures/Institutions': 0.3,
+    'Abortion Related': 0.1,
+    'Journalists & Media': 0.5,
+    'NGO': 0.5,
+    'Telecommunication': 0.7,
+    'Terrorists/Non-State Militia': 0.1,
+    'Educational Institution': 0.6,
+    'Airports & Aircraft': 0.87,
+    'Unknown': 0.1,
+    'Maritime': 0.7,
+    'Food or Water Supply': 0.7,
+    'Other': 0.1
+}
+
+# Map weights to the target type column
+cleaned_terrorism_df['target_type_weight'] = cleaned_terrorism_df['targtype1_txt'].map(target_type_weights)
+def compute_attack_metrics(dataframe, parameters):
+    """
+    Function to compute essential metrics for each incident based on specified parameters.
+    
+    Parameters:
+    dataframe : DataFrame
+        DataFrame containing the relevant data for terrorist incidents.
+    parameters : dict
+        Dictionary containing parameters for computing attack metrics.
+        Example parameters:
+        {
+            'severity_factor': 0.8,
+            'impact_factor': 0.5,
+            # Add more parameters as needed
+        }
+        
+    Returns:
+    DataFrame
+        DataFrame with computed attack metrics added as new columns.
+    """
+    # Compute attack severity based on the number of fatalities (nkill) and specified severity factor
+    dataframe['attack_severity'] = dataframe['nkill'] + dataframe['nwound'] / parameters['severity_factor']
+    
+    # Compute potential impact based on the number of fatalities (nkill) and injuries (nwound)
+    # and the specified impact factor
+    dataframe['potential_impact'] = dataframe['nkill'] + cleaned_terrorism_df['target_type_weight'] * parameters['impact_factor']
+    
+    return dataframe
+
+# Example parameters
+parameters = {
+    'severity_factor': 3.0,  # Adjust this factor based on your analysis requirements
+    'impact_factor': 0.5  # Adjust this factor based on your analysis requirements
+}
+
+# Call the function with the cleaned_terrorism_df DataFrame and parameters
+result_df = compute_attack_metrics(cleaned_terrorism_df, parameters)
+
+# Display the resulting DataFrame with computed attack metrics
+result_df.head()
+
+# Create a DataFrame with the specified columns
+data = {
+    'iyear': [2023],
+    'country_txt': ['United States'],
+    'region_txt': ['North America'],
+    'latitude': [40.7128],
+    'longitude': [-74.0060],
+    'attacktype1_txt': ['Bombing/Explosion'],
+    'targtype1_txt': ['Business'],
+    'weaptype1_txt': ['Explosives'],
+    'success': [1],
+    'nkill': [10],
+    'nwound': [20],
+    'gname': ['Fake Group'],
+    'attack_severity': [10],  # Assuming a fixed value for demonstration
+    'potential_impact': [30],  # Assuming a fixed value for demonstration
+    'target_type_numeric': [1],  # Assuming a fixed value for demonstration
+    'target_type_weight': [0.5]  # Assuming a fixed value for demonstration
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Display the DataFrame
+df
+def compute_attack_metrics(dataframe, parameters):
+    """
+    Function to compute essential metrics for each incident based on specified parameters.
+    
+    Parameters:
+    dataframe : DataFrame
+        DataFrame containing the relevant data for terrorist incidents.
+    parameters : dict
+        Dictionary containing parameters for computing attack metrics.
+        Example parameters:
+        {
+            'severity_factor': 0.8,
+            'impact_factor': 0.5,
+            # Add more parameters as needed
+        }
+        
+    Returns:
+    DataFrame
+        DataFrame with computed attack metrics added as new columns.
+    """
+    # Compute attack severity based on the number of fatalities (nkill) and specified severity factor
+    df['attack_severity'] = df['nkill'] + df['nwound'] / parameters['severity_factor']
+    
+    # Compute potential impact based on the number of fatalities (nkill) and injuries (nwound)
+    # and the specified impact factor
+    df['potential_impact'] = df['nkill'] + df['target_type_weight'] * parameters['impact_factor']
+    
+    return dataframe
+
+# Example parameters
+parameters = {
+    'severity_factor': 3.0,  # Adjust this factor based on your analysis requirements
+    'impact_factor': 0.5  # Adjust this factor based on your analysis requirements
+}
+
+# Call the function with the cleaned_terrorism_df DataFrame and parameters
+result_df1 = compute_attack_metrics(df, parameters)
+
+# Display the resulting DataFrame with computed attack metrics
+result_df1.head()
