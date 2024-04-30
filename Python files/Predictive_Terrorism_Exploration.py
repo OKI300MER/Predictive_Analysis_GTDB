@@ -11,7 +11,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LinearRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from imblearn.over_sampling import SMOTE
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import RandomForestRegressor
@@ -22,7 +21,7 @@ from scipy.stats import chi2_contingency
 from scipy.stats import f_oneway
 
 # Load the dataset
-terrorism_df = pd.read_csv(r"C:\Users\shric\Desktop\Dai\articles\CAPSTONE\Predictive_Analysis_GTDB\data\globalterrorismdb_0522dist.csv")
+terrorism_df = pd.read_csv(r"C:\Users\shric\Desktop\Dai\articles\CAPSTONE1\Predictive_Analysis_GTDB\data\globalterrorismdb_0522dist.csv")
 
 # Clean the dataset
 columns_of_interest = ['iyear', 'country_txt', 'region_txt', 'latitude', 'longitude', 'attacktype1_txt', 'targtype1_txt', 'weaptype1_txt', 'success', 'nkill', 'nwound', 'gname']
@@ -30,7 +29,7 @@ cleaned_terrorism_df = terrorism_df[columns_of_interest]
 
 # Filter data for the specified time period
 cleaned_terrorism_df = cleaned_terrorism_df[(cleaned_terrorism_df['iyear'] >= 2000) & (cleaned_terrorism_df['iyear'] <= 2023)]
-cleaned_terrorism_df.info()
+cleaned_terrorism_df.describe()
 
 # Visualize top countries by number of attacks
 top_countries = cleaned_terrorism_df['country_txt'].value_counts().head(10)
@@ -66,7 +65,7 @@ plt.tight_layout()
 plt.show()
 
 # Get the top 10 target types by the number of attacks
-top_targets = filtered_df['targtype1_txt'].value_counts().head(10).index
+top_targets = filtered_df['targtype1_txt'].value_counts().head(5).index
 
 # Filter the DataFrame to include only the top 10 target types
 filtered_df_top_targets = filtered_df[filtered_df['targtype1_txt'].isin(top_targets)]
@@ -76,14 +75,39 @@ plt.figure(figsize=(12, 8))
 sns.countplot(data=filtered_df_top_targets, x='targtype1_txt', hue='region_txt', palette='tab20')
 plt.xlabel('Target Type')
 plt.ylabel('Number of Attacks')
-plt.title('Number of Attacks by Top 10 Target Types and Region')
+plt.title('Number of Attacks by Top Target Types and Region')
 plt.legend(title='Region', bbox_to_anchor=(1.05, 1), loc='upper left')
-plt.xticks(rotation=90)
+plt.xticks(rotation=0)
 plt.tight_layout()
 plt.show()
 
 # Group the data by year and count the number of attacks in each year
 attacks_over_time = filtered_df['iyear'].value_counts().sort_index()
+
+# Visualize both the total number of attacks and fatalities over time
+plt.figure(figsize=(12, 6))
+
+# Plot the total number of attacks over time
+plt.plot(attacks_over_time.index, attacks_over_time.values, color='blue', marker='o', label='Number of Attacks')
+
+# Plot the total number of fatalities over time (assuming you have a column 'nkill' for fatalities)
+fatalities_over_time = filtered_df.groupby('iyear')['nkill'].sum().sort_index()
+plt.plot(fatalities_over_time.index, fatalities_over_time.values, color='red', marker='s', label='Number of Fatalities')
+
+# Set labels and title
+plt.xlabel('Year')
+plt.ylabel('Count')
+plt.title('Total Number of Attacks and Fatalities Over Time')
+plt.annotate('Peak Attacks 2014', xy=(2014, 16000), xytext=(2010, 15900), arrowprops=dict(facecolor='black', edgecolor='black', arrowstyle='->', linewidth=3))
+
+# Add legend
+plt.legend()
+
+# Show plot
+plt.grid(True)
+plt.tight_layout()
+plt.annotate('Peak Deaths 2014', xy=(2014, 44000), xytext=(2010, 43800), arrowprops=dict(facecolor='black', edgecolor='orange', arrowstyle='->', linewidth=3))
+plt.show()
 
 # Plotting the number of attacks over time using Seaborn
 plt.figure(figsize=(12, 6))
@@ -92,7 +116,7 @@ plt.xlabel('Year')
 plt.ylabel('Number of Attacks')
 plt.title('Number of Attacks Over Time')
 plt.annotate('Peak 2014', xy=(2014, 16000), xytext=(2010, 15900), arrowprops=dict(facecolor='black', edgecolor='black', arrowstyle='->', linewidth=3))
-plt.ylim(bottom=0)
+plt.ylim(bottom=0)  # Set the lower limit of the y-axis to 0
 plt.tight_layout()
 plt.show()
 
@@ -107,7 +131,7 @@ plt.figure(figsize=(12, 8))
 sns.barplot(data=fatalities_by_country.head(10), x='nkill', y='country_txt', palette='viridis')
 plt.xlabel('Number of Fatalities')
 plt.ylabel('Country')
-plt.title('Number of Fatalities by Country (Top 15)')
+plt.title('Number of Fatalities by Country (Top 10)')
 plt.tight_layout()
 plt.show()
 
@@ -148,7 +172,6 @@ country_dummies.head(1)
 
 # # Create a new DataFrame with selected columns
 # log_model_columns = country_dummies[selected_columns]
-
 # log_model_columns
 country_dummies.dropna()
 country_dummies.info()
@@ -226,7 +249,6 @@ roc_auc = roc_auc_score(y_test, y_pred)
 print("Accuracy:", accuracy)
 print("Classification Report:\n", classification_report1)
 print("ROC AUC Score:", roc_auc)
-
 # Confusion Matrix
 conf_matrix = confusion_matrix(y_test, y_pred)
 
@@ -261,13 +283,9 @@ attack_type_columns = [col for col in attack_country_dummies.columns if 'attackt
 
 # Extract the attack type columns along with other necessary features
 features_and_target = attack_country_dummies[attack_type_columns]
-attack_country_dummies
 
 # Identify the attack type columns
 attack_type_columns = [col for col in country_dummies.columns if 'attacktype1_txt_' in col]
-
-# Define other features excluding attack type columns
-other_features = [col for col in country_dummies.columns if col not in attack_type_columns]
 
 # Extract the attack type columns along with other necessary features
 features_and_target = country_dummies[attack_type_columns + other_features]
@@ -275,7 +293,6 @@ features_and_target = country_dummies[attack_type_columns + other_features]
 # Drop rows with missing values from both X_multiclass and y_multiclass
 X_multiclass = X_multiclass.dropna()
 y_multiclass = y_multiclass.loc[X_multiclass.index]
-
 # Convert one-hot encoded target variable to class labels
 y_multiclass_labels = np.argmax(y_multiclass.values, axis=1)
 
@@ -306,7 +323,6 @@ plt.title("Confusion Matrix - Multiclass Classification")
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.show()
-
 columns_of_interest = ['iyear', 'country_txt', 'region_txt', 'attacktype1_txt', 'targtype1_txt', 'weaptype1_txt', 'nkill', 'nwound']
 cleaned_df = terrorism_df[columns_of_interest]
 
@@ -375,8 +391,7 @@ HeatMapWithTime(heat_data, radius=15).add_to(base_map)
 
 # Display the map
 base_map.save("terrorist_attacks_heatmap_with_time.html")
-
-# Define numerical values for each target type category
+Define numerical values for each target type category
 target_type_values = {
     'Business': 1,
     'Police': 2,
@@ -404,7 +419,6 @@ target_type_values = {
 
 # Map numerical values to the target type column
 cleaned_terrorism_df['target_type_numeric'] = cleaned_terrorism_df['targtype1_txt'].map(target_type_values)
-
 # Assign numerical weight to each target
 target_type_weights = {
     'Business': 0.5,
@@ -473,7 +487,6 @@ result_df = compute_attack_metrics(cleaned_terrorism_df, parameters)
 
 # Display the resulting DataFrame with computed attack metrics
 result_df.head()
-
 # Create a DataFrame with the specified columns
 data = {
     'iyear': [2023],
@@ -539,3 +552,34 @@ result_df1 = compute_attack_metrics(df, parameters)
 
 # Display the resulting DataFrame with computed attack metrics
 result_df1.head()
+# Step 1: Identify the top 3 countries with the highest number of terrorist attacks
+top3_countries = cleaned_terrorism_df['country_txt'].value_counts().head(1).index.tolist()
+
+# Step 2: For each of these countries, identify the top 3 types of attacks
+top3_attack_types = []
+for country in top3_countries:
+    country_df = cleaned_terrorism_df[cleaned_terrorism_df['country_txt'] == country]
+    top3_attack_types.extend(country_df['attacktype1_txt'].value_counts().head(3).index.tolist())
+
+# Step 3: Calculate severity and impact for each attack
+severity_impact_data = []
+for country in top3_countries:
+    country_df = cleaned_terrorism_df[cleaned_terrorism_df['country_txt'] == country]
+    for attack_type in top3_attack_types:
+        attack_df = country_df[country_df['attacktype1_txt'] == attack_type]
+        attack_df = compute_attack_metrics(attack_df, parameters)  # Assuming parameters are provided
+        severity = attack_df['attack_severity'].mean()
+        impact = attack_df['potential_impact'].mean()
+        severity_impact_data.append({'Country': country, 'Attack Type': attack_type, 'Severity': severity, 'Impact': impact})
+
+# Step 4: Plot bar graph
+severity_impact_df = pd.DataFrame(severity_impact_data)
+fig, ax = plt.subplots(figsize=(10, 6))
+severity_impact_df.set_index(['Country', 'Attack Type']).plot(kind='bar', ax=ax)
+plt.title('Severity and Impact of Top 3 Attack Types Iraq')
+plt.xlabel('Country, Attack Type')
+plt.ylabel('Severity and Impact')
+plt.xticks(rotation=0)
+plt.legend(title='Metric')
+plt.tight_layout()
+plt.show()

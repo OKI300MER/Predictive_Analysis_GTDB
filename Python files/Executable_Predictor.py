@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 
+
 def compute_attack_metrics(nkill, nwound, target_type_weight, parameters):
     """
     Function to compute essential metrics for each incident based on specified parameters.

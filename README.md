@@ -70,17 +70,16 @@ Analysis Steps
  - Hypothesis: Certain factors significantly influence the success of a terrorist attack.
   - Null Hypothesis (H0): The features do not affect the success of a terrorist attack.
   - Alternative Hypothesis (Ha): The features have a significant impact on the success of a terrorist attack.
- - Analysis Model: Logistic regression to identify the most influential features on attack success.
- 
+ - Analysis Model: The logistic regression analysis demonstrates how various factors like region, type of attack, and success significantly influence the success of a terrorist attack, as indicated by the model's accuracy in predicting attack success.
  - Hypothesis: Different features contribute to the classification of terrorist attack types.
   - Null Hypothesis (H0): The features are not predictive of the type of terrorist attack.
   - Alternative Hypothesis (Ha): There are significant associations between certain features and the type of terrorist attack.
- - Analysis Model: Multiclass logistic regression to identify the features most associated with each attack type.
+ - Analysis Model: The multiclass logistic regression analysis reveals how different features such as region, target type, and weapon type contribute to the classification of terrorist attack types, providing insights into the varied nature of terrorist activities.
  
  - Hypothesis: Various factors contribute to the number of fatalities or injuries in a terrorist attack.
   - Null Hypothesis (H0): The selected features do not influence the number of fatalities or injuries in a terrorist attack.
   - Alternative Hypothesis (Ha): The selected features have a significant impact on the number of fatalities or injuries in a terrorist attack.
- - Analysis Model: Random forests regression to determine the most important features affecting the severity of the attack.
+ - Analysis Model: The random forest regression analysis illustrates how various factors such as region, success, and type of attack contribute to the number of fatalities or injuries in a terrorist attack, highlighting the complexity of predicting such outcomes.
 
 4. Machine Learning Models:
  - Binary Classification of Attack Success: Predicted whether a terrorist attack is successful or not using logistic regression.
