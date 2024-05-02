@@ -133,7 +133,7 @@ These findings provide insights into the patterns and trends of terrorist activi
 Executable Severity and Impact Function
 - Definition: Severity measures the extent of harm caused by a terrorist attack, primarily focusing on the number of fatalities and injuries.
 
-  Formula: The severity of an attack is calculated using the following formula:
+- Formula: The severity of an attack is calculated using the following formula:
   - Severity=min⁡((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
   - Severity=min((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
   - Here, the severity factor is a parameter that adjusts the weight of fatalities and injuries in determining severity. The max severity is the upper limit of severity, usually set to 100%.
@@ -147,7 +147,7 @@ Executable Severity and Impact Function
 
 - Definition: Impact evaluates the broader consequences of a terrorist attack beyond casualties, considering factors like damage to infrastructure or targeting of key entities.
 
-  - Formula: The impact of an attack is calculated using the following formula:
+- Formula: The impact of an attack is calculated using the following formula:
   - Potential Impact=min⁡((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
   - Potential Impact=min((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
 
