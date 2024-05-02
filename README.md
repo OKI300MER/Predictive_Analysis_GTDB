@@ -31,16 +31,15 @@ Relevant columns for analysis include:
  - nwound: Number of injuries
  - gname: Perpetrator group name
    
-      iyear	latitude	longitude	success	nkill	nwound	target_type_numeric	target_type_weight	attack_severity	potential_impact
-- count	144832.000000	143825.000000	143825.000000	144832.000000	138025.000000	132456.000000	144832.000000	144832.000000	131981.000000	138025.000000
-- mean	2013.818472	25.580683	50.389078	0.867087	2.540714	3.458983	5.671716	0.530910	3.320036	2.806089
-- std	  4.692418	  13.806927	37.016917	0.339481	11.751085	44.408428	4.842565	0.245175	22.134606	11.752249
-- min	  2000.000000	-84.671596	-158.081142	0.000000	0.000000	0.000000	1.000000	0.100000	0.000000	0.050000
-- 25%	  2012.000000	13.866642	37.599078	1.000000	0.000000	0.000000	3.000000	0.300000	0.000000	0.300000
-- 50%	  2014.000000	32.069287	44.766691	1.000000	1.000000	0.000000	3.000000	0.500000	1.000000	1.150000
-- 75%	  2017.000000	34.283562	70.273737	1.000000	2.000000	3.000000	7.000000	0.800000	3.000000	2.350000
-- max	  2021.000000	69.983791	179.366667	1.000000	1700.000000	10878.000000	22.000000	0.870000	5011.000000	1700.400000
-
+	iyear	latitude	longitude	success	nkill	nwound	target_type_numeric	target_type_weight	attack_severity	potential_impact
+count	144832	143825	143825	144832	138025	132456	144832	144832	131981	138025
+mean	2013.82	25.58	50.39	0.867	2.54	3.46	5.67	0.53	3.32	2.81
+std	4.69	13.81	37.02	0.339	11.75	44.41	4.84	0.25	22.13	11.75
+min	2000	-84.67	-158.08	0	0	0	1	0.1	0	0.05
+25%	2012	13.87	37.60	1	0	0	3	0.3	0	0.3
+50%	2014	32.07	44.77	1	1	0	3	0.5	1	1.15
+75%	2017	34.28	70.27	1	2	3	7	0.8	3	2.35
+max	2021	69.98	179.37	1	1700	10878	22	0.87	5011	1700.4
 
 
 The visualizations provide insights into various aspects of terrorism, including the top countries and regions affected, the distribution of attack types and target types, trends over time, and fatalities by country. Statistical tests like chi-square and ANOVA are used to analyze relationships between categorical variables. Machine learning models, such as logistic regression and random forests, are employed to predict the success of terrorist attacks based on various factors.
