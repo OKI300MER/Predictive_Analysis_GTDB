@@ -122,4 +122,27 @@ Multiclass Classification of Attack Type:
 Regression on Fatalities or Injuries:
  - The random forests regression model was moderately successful in predicting the number of fatalities or injuries in terrorist attacks.
 
+A positive correlation between attack severity (measured by fatalities) and the weight of target types, implying that attacks targeting specific entities tend to result in more fatalities. Additionally, the chi-square test results hinted at regional disparities in the severity of terrorist attacks.
+
+The logistic regression model unveiled a relationship between target type, attack severity, and the success of terrorist attacks.
+
+The correlation matrix shed light on the intricate relationship between geographical coordinates and various attributes of terrorist attacks. Notably, latitude exhibited a slight positive correlation with fatalities, suggesting that attacks occurring at specific latitudes might entail more severe outcomes.
+
 These findings provide insights into the patterns and trends of terrorist activities, the factors influencing attack success, the distribution of attack types, and the severity of attacks in terms of fatalities and injuries. Further analysis and refinement of machine learning models could enhance the understanding of these phenomena and improve predictive accuracy.
+
+Executable Severity and Impact Function
+- Severity: In our analysis, severity refers to the level of harm caused by a terrorist attack, primarily measured by the number of fatalities and injuries. We use a formula to compute attack severity, which combines the number of fatalities and injuries, and divides the latter by a severity factor before adding them together. This formula allows us to give more weight to fatalities than injuries.
+
+- Impact: On the other hand, encompasses the broader consequences of a terrorist attack beyond just casualties. It takes into account factors such as damage to infrastructure, targeting of key personnel, or disruption of societal functions. Our model calculates potential impact by considering the number of fatalities and a weighted factor related to the target type of the attack. This calculation helps estimate the broader impact of the attack, providing insights into its ramifications beyond immediate casualties.
+
+Severity Calculation:
+- Severity Factor = 3 (Mean # Kills) + (Mean # Wounded)/2
+  Total Severity = (Number of Fatalities) + (Number of Injuries / Severity Factor)
+  This formula computes severity by adding the number of fatalities to the number of injuries adjusted by a severity factor, which accounts for the relative severity of injuries compared to fatalities.
+
+Impact Calculation:
+- Impact Factor = 0.05 (Every attack has some impact no matter how small)
+  Total Impact = (Number of Fatalities) + (Impact Factor * Target Weight)
+  The impact factor, multiplied by the target weight, is added to the number of fatalities to estimate the broader impact of the attack, considering factors such as the importance of the target and the potential societal disruption.
+
+These weights will change by location as some countries may consider religious leader more important that political or business over military

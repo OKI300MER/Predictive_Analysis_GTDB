@@ -1,30 +1,52 @@
 import tkinter as tk
 from tkinter import ttk
-import pandas as pd
-
 
 def compute_attack_metrics(nkill, nwound, target_type_weight, parameters):
     """
     Function to compute essential metrics for each incident based on specified parameters.
     """
-    attack_severity = nkill + nwound / parameters['severity_factor']
-    potential_impact = nkill + target_type_weight * parameters['impact_factor']
-    return attack_severity, potential_impact
+    # Compute severity and impact
+    attack_severity = min((nkill + (nwound / parameters['severity_factor'])), parameters['max_severity'])
+    potential_impact = min(nkill + nwound + target_type_weight * parameters['impact_factor'], parameters['max_impact'])
+    
+    # Classify severity
+    if attack_severity <= 5:
+        severity_category = "Low"
+    elif 6 <= attack_severity <= 25:
+        severity_category = "Medium"
+    elif 26 <= attack_severity <= 75:
+        severity_category = "High"
+    else:
+        severity_category = "Extremely High"
+    
+    # Classify impact
+    if potential_impact <= 10:
+        impact_category = "Low"
+    elif 11 <= potential_impact <= 50:
+        impact_category = "Medium"
+    else:
+        impact_category = "High"
+    
+    return attack_severity, potential_impact, severity_category, impact_category
 
 def process_data():
     nkill = float(nkill_entry.get())
     nwound = float(nwound_entry.get())
     target_type_weight = float(target_type_weight_combobox.get().split()[0])  # Extracting the numeric value from the selected string
 
-    severity, impact = compute_attack_metrics(nkill, nwound, target_type_weight, parameters)
+    # Compute metrics and categories
+    severity, impact, severity_category, impact_category = compute_attack_metrics(nkill, nwound, target_type_weight, parameters)
     
-    severity_label.config(text=f"Severity: {severity}")
-    impact_label.config(text=f"Impact: {impact}")
+    # Update labels
+    severity_label.config(text=f"Severity: {severity} ({severity_category})")
+    impact_label.config(text=f"Impact: {impact} ({impact_category})")
 
 # Example parameters
 parameters = {
-    'severity_factor': 3.0,
-    'impact_factor': 0.5
+    'severity_factor': 3,  # Adjust based on your dataset
+    'max_severity': 100,  # Maximum severity value (0-100%)
+    'impact_factor': .05,  # Adjust based on your dataset
+    'max_impact': 100,  # Maximum impact value (0-100%)
 }
 
 # Create GUI
@@ -50,13 +72,13 @@ target_type_weight_label = ttk.Label(main_frame, text="Target Type Weight:")
 target_type_weight_label.grid(column=0, row=2, sticky=tk.W)
 
 # Options for target type weight
-target_weight_options = ['0.5 (Business)', '0.7 (Police)', '0.3 (Private Citizens & Property)', '0.8 (Utilities)',
-                         '0.8 (Military)', '0.1 (Violent Political Party)', '0.8 (Government - General)',
-                         '0.3 (Transportation)', '0.1 (Tourists)', '0.8 (Government - Diplomatic)',
-                         '0.3 (Religious Figures/Institutions)', '0.1 (Abortion Related)', '0.5 (Journalists & Media)',
-                         '0.5 (NGO)', '0.7 (Telecommunication)', '0.1 (Terrorists/Non-State Militia)',
-                         '0.6 (Educational Institution)', '0.87 (Airports & Aircraft)', '0.1 (Unknown)',
-                         '0.7 (Maritime)', '0.7 (Food or Water Supply)', '0.1 (Other)']
+target_weight_options = ['5 (Business)', '7 (Police)', '3 (Private Citizens & Property)', '8 (Utilities)',
+                         '8 (Military)', '1 (Violent Political Party)', '8 (Government - General)',
+                         '3 (Transportation)', '1 (Tourists)', '8 (Government - Diplomatic)',
+                         '5 (Religious Figures/Institutions)', '1 (Abortion Related)', '5 (Journalists & Media)',
+                         '5 (NGO)', '7 (Telecommunication)', '1 (Terrorists/Non-State Militia)',
+                         '6 (Educational Institution)', '8 (Airports & Aircraft)', '1 (Unknown)',
+                         '7 (Maritime)', '7 (Food or Water Supply)', '1 (Other)']
 
 target_type_weight_combobox = ttk.Combobox(main_frame, values=target_weight_options)
 target_type_weight_combobox.grid(column=1, row=2)
