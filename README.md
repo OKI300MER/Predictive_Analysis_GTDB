@@ -134,30 +134,30 @@ Executable Severity and Impact Function
 - Definition: Severity measures the extent of harm caused by a terrorist attack, primarily focusing on the number of fatalities and injuries.
 
   Formula: The severity of an attack is calculated using the following formula:
-  Severity=min⁡((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
-  Severity=min((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
-  Here, the severity factor is a parameter that adjusts the weight of fatalities and injuries in determining severity. The max severity is the upper limit of severity, usually set to 100%.
+  - Severity=min⁡((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
+  - Severity=min((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
+  - Here, the severity factor is a parameter that adjusts the weight of fatalities and injuries in determining severity. The max severity is the upper limit of severity, usually set to 100%.
 
 - Classification: Severity is classified into four categories based on the calculated severity value:
-  Low: Severity values ranging from 0 to 5.
-  Medium: Severity values ranging from 6 to 25.
-  High: Severity values ranging from 26 to 75.
-  Extremely High: Severity values ranging from 76 to 100.
+  - Low: Severity values ranging from 0 to 5.
+  - Medium: Severity values ranging from 6 to 25.
+  - High: Severity values ranging from 26 to 75.
+  - Extremely High: Severity values ranging from 76 to 100.
 
 
 - Definition: Impact evaluates the broader consequences of a terrorist attack beyond casualties, considering factors like damage to infrastructure or targeting of key entities.
 
-  Formula: The impact of an attack is calculated using the following formula:
-  Potential Impact=min⁡((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
-  Potential Impact=min((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
+  - Formula: The impact of an attack is calculated using the following formula:
+  - Potential Impact=min⁡((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
+  - Potential Impact=min((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
 
 
 - Here, the impact factor is a parameter that adjusts the weight of target type in determining impact. The max impact is the upper limit of impact, usually set to 100%.
 
-  Classification: Impact is classified into three categories based on the calculated impact value:
-  Low: Impact values ranging from 0 to 10.
-  Medium: Impact values ranging from 11 to 50.
-  High: Impact values ranging from 51 to 100.
+- Classification: Impact is classified into three categories based on the calculated impact value:
+  - Low: Impact values ranging from 0 to 10.
+  - Medium: Impact values ranging from 11 to 50.
+  - High: Impact values ranging from 51 to 100.
 
 
 These weights will change by location as some countries may consider religious leader more important that political or business over military
