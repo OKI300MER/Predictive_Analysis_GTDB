@@ -131,18 +131,33 @@ The correlation matrix shed light on the intricate relationship between geograph
 These findings provide insights into the patterns and trends of terrorist activities, the factors influencing attack success, the distribution of attack types, and the severity of attacks in terms of fatalities and injuries. Further analysis and refinement of machine learning models could enhance the understanding of these phenomena and improve predictive accuracy.
 
 Executable Severity and Impact Function
-- Severity: In our analysis, severity refers to the level of harm caused by a terrorist attack, primarily measured by the number of fatalities and injuries. We use a formula to compute attack severity, which combines the number of fatalities and injuries, and divides the latter by a severity factor before adding them together. This formula allows us to give more weight to fatalities than injuries.
+- Definition: Severity measures the extent of harm caused by a terrorist attack, primarily focusing on the number of fatalities and injuries.
 
-- Impact: On the other hand, encompasses the broader consequences of a terrorist attack beyond just casualties. It takes into account factors such as damage to infrastructure, targeting of key personnel, or disruption of societal functions. Our model calculates potential impact by considering the number of fatalities and a weighted factor related to the target type of the attack. This calculation helps estimate the broader impact of the attack, providing insights into its ramifications beyond immediate casualties.
+  Formula: The severity of an attack is calculated using the following formula:
+  Severity=min⁡((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
+  Severity=min((Number of Fatalities+Number of Injuries)×Severity Factor,Max Severity)
+  Here, the severity factor is a parameter that adjusts the weight of fatalities and injuries in determining severity. The max severity is the upper limit of severity, usually set to 100%.
 
-Severity Calculation:
-- Severity Factor = 3 (Mean # Kills) + (Mean # Wounded)/2
-  Total Severity = (Number of Fatalities) + (Number of Injuries / Severity Factor)
-  This formula computes severity by adding the number of fatalities to the number of injuries adjusted by a severity factor, which accounts for the relative severity of injuries compared to fatalities.
+- Classification: Severity is classified into four categories based on the calculated severity value:
+  Low: Severity values ranging from 0 to 5.
+  Medium: Severity values ranging from 6 to 25.
+  High: Severity values ranging from 26 to 75.
+  Extremely High: Severity values ranging from 76 to 100.
 
-Impact Calculation:
-- Impact Factor = 0.05 (Every attack has some impact no matter how small)
-  Total Impact = (Number of Fatalities) + (Impact Factor * Target Weight)
-  The impact factor, multiplied by the target weight, is added to the number of fatalities to estimate the broader impact of the attack, considering factors such as the importance of the target and the potential societal disruption.
+
+- Definition: Impact evaluates the broader consequences of a terrorist attack beyond casualties, considering factors like damage to infrastructure or targeting of key entities.
+
+  Formula: The impact of an attack is calculated using the following formula:
+  Potential Impact=min⁡((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
+  Potential Impact=min((Number of Fatalities+Number of Injuries+Target Type Weight×Impact Factor),Max Impact)
+
+
+- Here, the impact factor is a parameter that adjusts the weight of target type in determining impact. The max impact is the upper limit of impact, usually set to 100%.
+
+  Classification: Impact is classified into three categories based on the calculated impact value:
+  Low: Impact values ranging from 0 to 10.
+  Medium: Impact values ranging from 11 to 50.
+  High: Impact values ranging from 51 to 100.
+
 
 These weights will change by location as some countries may consider religious leader more important that political or business over military
