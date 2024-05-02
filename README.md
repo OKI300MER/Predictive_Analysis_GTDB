@@ -133,22 +133,19 @@ Multiclass Classification of Attack Type:
 Regression on Fatalities or Injuries:
  - The random forests regression model was moderately successful in predicting the number of fatalities or injuries in terrorist attacks.
 
-Accuracy: 0.8979591836734694
-Classification Report:               
-
-              precision    recall  f1-score   support
-         0.0       0.73      0.38      0.50      3790
-         1.0       0.91      0.98      0.94     24434
-
-    accuracy                           0.90     28224
-   macro avg       0.82      0.68      0.72     28224
-weighted avg       0.89      0.90      0.88     28224
-
-ROC AUC Score: 0.6805770885026985
-
-Mean Absolute Error: 3.2087698809967864
-
-Mean Squared Error: 1596.1432421023383
+| Metric                | Value                         |
+|-----------------------|-------------------------------|
+| Accuracy              | 0.8979591836734694           |
+| Classification Report |                               |
+|                       | Precision  | Recall  | F1-score | Support |
+| 0.0                   | 0.73       | 0.38    | 0.50     | 3790    |
+| 1.0                   | 0.91       | 0.98    | 0.94     | 24434   |
+| Accuracy              |            |         | 0.90     | 28224   |
+| Macro Avg             | 0.82       | 0.68    | 0.72     | 28224   |
+| Weighted Avg          | 0.89       | 0.90    | 0.88     | 28224   |
+| ROC AUC Score         | 0.6805770885026985           |
+| Mean Absolute Error   | 3.2087698809967864           |
+| Mean Squared Error    | 1596.1432421023383           |
 
 A positive correlation between attack severity (measured by fatalities) and the weight of target types, implying that attacks targeting specific entities tend to result in more fatalities. Additionally, the chi-square test results hinted at regional disparities in the severity of terrorist attacks.
 
